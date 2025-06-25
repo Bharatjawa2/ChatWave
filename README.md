@@ -29,7 +29,7 @@ ChatWave/
 
 ### 1. Clone the repository
 ```bash
-git clone <repo-url>
+git clone <https://github.com/Bharatjawa2/ChatWave>
 cd ChatWave
 ```
 
