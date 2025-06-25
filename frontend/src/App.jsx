@@ -88,7 +88,7 @@ function AppContent() {
           }));
         }
         else if(mounted){
-          setUserInfo(undefined)
+          setUserInfo(null)
           if (data.message && !isAuthPage) {
             toast({
               title: "Authentication Error",
@@ -100,7 +100,7 @@ function AppContent() {
         
       } catch (error) {
         if(mounted){
-          setUserInfo(undefined)
+          setUserInfo(null)
           if (!isAuthPage) {
             toast({
               title: "Connection Error",
@@ -117,7 +117,7 @@ function AppContent() {
       }
     }
 
-    if(!userInfo){
+    if(userInfo === undefined){
       getUserInfo();
     }
     else{
@@ -160,7 +160,7 @@ function AppContent() {
               description: "Your session has expired. Please login again.",
               variant: "destructive"
             })
-            setUserInfo(undefined)
+            setUserInfo(null)
           } else if (error.response.status === 403) {
             toast({
               title: "Permission Denied",

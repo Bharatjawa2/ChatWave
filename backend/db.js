@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
 export const connectMongoDB=async()=>{
-    try {
-        
+    try {   
         const instanceURL=await mongoose.connect(`${process.env.MONGODB_URL}/chatwave`)
         console.log("MongoDB connection successfull");
 

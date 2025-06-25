@@ -65,43 +65,48 @@ function MessageBar() {
       const file = event.target.files[0];
       if (file) {
         const formData = new FormData();
-        formData.append("file", file)
-        setIsUploading(true)
-        const { data } = await apiClient.post(UPLOAD_FILE_route, formData,
+        formData.append("file", file);
+        setIsUploading(true);
+        const { data } = await apiClient.post(
+          UPLOAD_FILE_route,
+          formData,
           {
             withCredentials: true,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
             onUploadProgress: (data) => {
-              setFileUploadProgress(Math.round((100 * data.loaded) / data.total))
-            }
-          },
-        )
+              setFileUploadProgress(Math.round((100 * data.loaded) / data.total));
+            },
+          }
+        );
         if (data.success) {
           if (selectedChatType === "contact") {
-            setIsUploading(false)
             socket.emit("sendMessage", {
               sender: userInfo.id,
               content: undefined,
               recipient: selectedChatData._id,
               messageType: "file",
-              fileUrl: data.filePath
-            })
-          }else if (selectedChatType === "channel") {
-            setIsUploading(false)
+              fileUrl: data.filePath,
+            });
+          } else if (selectedChatType === "channel") {
             socket.emit("send-channel-message", {
               sender: userInfo.id,
               content: undefined,
               messageType: "file",
               fileUrl: data.filePath,
               channelId: selectedChatData._id,
-            })
-          }
+            });
           }
         }
-      } catch (error) {
-        setIsUploading(false)
-        console.log(error)
       }
+    } catch (error) {
+      if (window && window.alert) window.alert("File upload failed. Please try again.");
+      console.log(error);
+    } finally {
+      setIsUploading(false);
     }
+  };
 
   return (
       <div className="min-h-[60px] h-auto pb-safe bg-[#1c1d25] flex justify-center items-center px-2 sm:px-8 py-3 gap-2 sm:gap-6 sticky bottom-0 left-0 right-0">
